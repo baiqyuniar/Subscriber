@@ -3,10 +3,11 @@ import binascii
 from time import sleep
 import paho.mqtt.client as mqtt
 import ast
+from decouple import config
 # import json
 
 #MQTT
-mqttBroker = "192.168.43.57"
+mqttBroker = config('ADDRESS')
 client = mqtt.Client("AES Subscriber")
 client.connect(mqttBroker)
 
