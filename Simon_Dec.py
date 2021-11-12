@@ -2,9 +2,10 @@ from __future__ import print_function
 from time import sleep
 from collections import deque
 import paho.mqtt.client as mqtt
+from decouple import config
 
 #MQTT
-mqttBroker = "192.168.43.57"
+mqttBroker = config('ADDRESS')
 client = mqtt.Client("Simon Subscriber")
 client.connect(mqttBroker)
 
