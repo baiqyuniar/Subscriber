@@ -2,10 +2,9 @@ from __future__ import print_function
 from time import sleep
 from collections import deque
 import paho.mqtt.client as mqtt
-from decouple import config
 
 #MQTT
-mqttBroker = config('ADDRESS')
+mqttBroker = "192.168.8.166"
 client = mqtt.Client("Simon Subscriber")
 client.connect(mqttBroker)
 
@@ -285,7 +284,8 @@ class SimonCipher(object):
         return self.iv
 
 if __name__ == "__main__":
-    cipher = SimonCipher(0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100, 256, 128, 'ECB')
+    key = 0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100
+    cipher = SimonCipher(key, 256, 128, 'CBC', 0xf925)
     def on_message(client, userdata, message):
         msg = int(message.payload.decode("utf-8"))
         dec = cipher.decrypt(msg)
