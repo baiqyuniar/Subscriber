@@ -3,7 +3,7 @@ from random import randint
 from time import sleep
 import paho.mqtt.client as mqtt
 
-mqttBroker = "192.168.8.166"
+mqttBroker = "192.168.8.153"
 client = mqtt.Client("Speck Subscriber")
 client.connect(mqttBroker)
 
@@ -17,7 +17,7 @@ class SpeckCipher(object):
                       96: {96: 28, 144: 29},
                       128: {128: 32, 192: 33, 256: 34}}
 
-    __valid_modes = ['ECB', 'CTR', 'CBC', 'PCBC', 'CFB', 'OFB']
+    __valid_modes = ['ECB', 'CBC']
 
     def __init__(self, key, key_size=128, block_size=128, mode='ECB', init=0, counter=0):
 
@@ -140,15 +140,6 @@ class SpeckCipher(object):
         if self.mode == 'ECB':
             b, a = self.decrypt_function(b, a)
 
-        elif self.mode == 'CTR':
-            true_counter = self.iv + self.counter
-            d = (true_counter >> self.word_size) & self.mod_mask
-            c = true_counter & self.mod_mask
-            d, c = self.encrypt_function(d, c)
-            b ^= d
-            a ^= c
-            self.counter += 1
-
         elif self.mode == 'CBC':
             f, e = b, a
             b, a = self.decrypt_function(b, a)
@@ -158,40 +149,6 @@ class SpeckCipher(object):
             self.iv_upper = f
             self.iv_lower = e
             self.iv = (f << self.word_size) + e
-
-        elif self.mode == 'PCBC':
-            f, e = b, a
-
-            b, a = self.decrypt_function(b, a)
-
-            b ^= self.iv_upper
-            a ^= self.iv_lower
-            self.iv_upper = (b ^ f)
-            self.iv_lower = (a ^ e)
-            self.iv = (self.iv_upper << self.word_size) + self.iv_lower
-
-        elif self.mode == 'CFB':
-            d = self.iv_upper
-            c = self.iv_lower
-            self.iv_upper = b
-            self.iv_lower = a
-            self.iv = (b << self.word_size) + a
-            d, c = self.encrypt_function(d, c)
-
-            b ^= d
-            a ^= c
-
-        elif self.mode == 'OFB':
-            d = self.iv_upper
-            c = self.iv_lower
-            d, c = self.encrypt_function(d, c)
-
-            self.iv_upper = d
-            self.iv_lower = c
-            self.iv = (d << self.word_size) + c
-
-            b ^= d
-            a ^= c
 
         plaintext = (b << self.word_size) + a
 
@@ -229,7 +186,7 @@ class SpeckCipher(object):
         return self.iv
 
 if __name__ == "__main__":
-    cipher = SpeckCipher(0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100, 256, 128, 'ECB')
+    cipher = SpeckCipher(0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100, 256, 128, 'CBC', 0xff)
     def on_message(client, userdata, msg):
         msg = int(msg.payload.decode("utf-8"))
         dec = cipher.decrypt(msg)

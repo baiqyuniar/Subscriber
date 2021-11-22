@@ -4,7 +4,7 @@ from collections import deque
 import paho.mqtt.client as mqtt
 
 #MQTT
-mqttBroker = "192.168.8.166"
+mqttBroker = "192.168.8.153"
 client = mqtt.Client("Simon Subscriber")
 client.connect(mqttBroker)
 
@@ -26,7 +26,7 @@ class SimonCipher(object):
                       96: {96: (52, z2), 144: (54, z3)},
                       128: {128: (68, z2), 192: (69, z3), 256: (72, z4)}}
 
-    __valid_modes = ['ECB', 'CTR', 'CBC', 'PCBC', 'CFB', 'OFB']
+    __valid_modes = ['ECB', 'CBC']
 
     def __init__(self, key, key_size=128, block_size=128, mode='ECB', init=0, counter=0):
         """
@@ -162,15 +162,6 @@ class SimonCipher(object):
         if self.mode == 'ECB':
             a, b = self.decrypt_function(a, b)
 
-        elif self.mode == 'CTR':
-            true_counter = self.iv + self.counter
-            d = (true_counter >> self.word_size) & self.mod_mask
-            c = true_counter & self.mod_mask
-            d, c = self.encrypt_function(d, c)
-            b ^= d
-            a ^= c
-            self.counter += 1
-
         elif self.mode == 'CBC':
             f, e = b, a
             a, b = self.decrypt_function(a, b)
@@ -181,67 +172,9 @@ class SimonCipher(object):
             self.iv_lower = e
             self.iv = (f << self.word_size) + e
 
-        elif self.mode == 'PCBC':
-            f, e = b, a
-            a, b = self.decrypt_function(a, b)
-            b ^= self.iv_upper
-            a ^= self.iv_lower
-            self.iv_upper = (b ^ f)
-            self.iv_lower = (a ^ e)
-            self.iv = (self.iv_upper << self.word_size) + self.iv_lower
-
-        elif self.mode == 'CFB':
-            d = self.iv_upper
-            c = self.iv_lower
-            self.iv_upper = b
-            self.iv_lower = a
-            self.iv = (b << self.word_size) + a
-            d, c = self.encrypt_function(d, c)
-            b ^= d
-            a ^= c
-
-        elif self.mode == 'OFB':
-            d = self.iv_upper
-            c = self.iv_lower
-            d, c = self.encrypt_function(d, c)
-            self.iv_upper = d
-            self.iv_lower = c
-            self.iv = (d << self.word_size) + c
-
-            b ^= d
-            a ^= c
-
         plaintext = (b << self.word_size) + a
 
         return plaintext
-
-    def encrypt_function(self, upper_word, lower_word):
-        """
-        Completes appropriate number of Simon Fiestel function to encrypt provided words
-        Round number is based off of number of elements in key schedule
-        upper_word: int of upper bytes of plaintext input
-                    limited by word size of currently configured cipher
-        lower_word: int of lower bytes of plaintext input
-                    limited by word size of currently configured cipher
-        x,y:        int of Upper and Lower ciphertext words
-        """
-        x = upper_word
-        y = lower_word
-
-        # Run Encryption Steps For Appropriate Number of Rounds
-        for k in self.key_schedule:
-            # Generate all circular shifts
-            ls_1_x = ((x >> (self.word_size - 1)) + (x << 1)) & self.mod_mask
-            ls_8_x = ((x >> (self.word_size - 8)) + (x << 8)) & self.mod_mask
-            ls_2_x = ((x >> (self.word_size - 2)) + (x << 2)) & self.mod_mask
-
-            # XOR Chain
-            xor_1 = (ls_1_x & ls_8_x) ^ y
-            xor_2 = xor_1 ^ ls_2_x
-            y = x
-            x = k ^ xor_2
-
-        return x, y
 
     def decrypt_function(self, upper_word, lower_word):
         """
