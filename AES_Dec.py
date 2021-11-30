@@ -98,7 +98,6 @@ def main2(msg, token):
 if __name__ == '__main__':
     def on_message(client, userdata, message):
         raw = json.loads(message.payload.decode('utf-8'))
-		# mess = raw['cipher']
         main2(raw['cipher'], "CI6MTU3ODQ4ODYyM30.SAjMKd0chcAWoFwMkfxJ-Z1lWRM9-AeSXuHZiXBTYyo")
 
     client.loop_start()
