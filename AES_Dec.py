@@ -4,9 +4,10 @@ import base64
 import binascii
 from time import sleep
 import paho.mqtt.client as mqtt
+import json
 
 # MQTT
-mqttBroker = "192.168.43.57"
+mqttBroker = "192.168.8.171"
 client = mqtt.Client('AES Subscriber')
 client.connect(mqttBroker)
 
@@ -92,12 +93,13 @@ def main2(msg, token):
 	pad_method = "PKCS5Padding"
 	code_method = "base64"
 	text = Cipher_AES(key, iv).decrypt(msg, cipher_method, pad_method, code_method)
-	print(text)
+	print('Decrypted\t:' + text)
 
 if __name__ == '__main__':
     def on_message(client, userdata, message):
-        msg = str(message.payload.decode('utf-8'))
-        main2(msg, "CI6MTU3ODQ4ODYyM30.SAjMKd0chcAWoFwMkfxJ-Z1lWRM9-AeSXuHZiXBTYyo")
+        raw = json.loads(message.payload.decode('utf-8'))
+		# mess = raw['cipher']
+        main2(raw['cipher'], "CI6MTU3ODQ4ODYyM30.SAjMKd0chcAWoFwMkfxJ-Z1lWRM9-AeSXuHZiXBTYyo")
 
     client.loop_start()
     client.subscribe('AES')
