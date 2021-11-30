@@ -2,8 +2,10 @@ from __future__ import print_function
 from random import randint
 from time import sleep
 import paho.mqtt.client as mqtt
+import json
+from datetime import datetime, timedelta
 
-mqttBroker = "192.168.8.153"
+mqttBroker = "192.168.43.57"
 client = mqtt.Client("Speck Subscriber")
 client.connect(mqttBroker)
 
@@ -186,9 +188,11 @@ class SpeckCipher(object):
         return self.iv
 
 if __name__ == "__main__":
-    cipher = SpeckCipher(0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100, 256, 128, 'CBC', 0xff)
-    def on_message(client, userdata, msg):
-        msg = int(msg.payload.decode("utf-8"))
+    key = 0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100
+    cipher = SpeckCipher(key, 256, 128, 'CBC', 0xff)
+    def on_message(client, userdata, message):
+        raw = json.loads(message.payload.decode("utf-8"))
+        msg = int(raw['cipher'])
         dec = cipher.decrypt(msg)
         print("Decrypted\t: ", dec)
 

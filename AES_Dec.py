@@ -6,7 +6,7 @@ from time import sleep
 import paho.mqtt.client as mqtt
 
 # MQTT
-mqttBroker = "192.168.8.166"
+mqttBroker = "192.168.43.57"
 client = mqtt.Client('AES Subscriber')
 client.connect(mqttBroker)
 

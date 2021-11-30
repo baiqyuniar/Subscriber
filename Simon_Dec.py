@@ -6,7 +6,7 @@ import paho.mqtt.client as mqtt
 from datetime import datetime, timedelta
 
 #MQTT
-mqttBroker = "192.168.8.153"
+mqttBroker = "192.168.43.57"
 client = mqtt.Client("Simon Subscriber")
 client.connect(mqttBroker)
 
@@ -222,7 +222,6 @@ if __name__ == "__main__":
     key = 0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100
     cipher = SimonCipher(key, 256, 128, 'CBC', 0xf925)
     def on_message(client, userdata, message):
-        
         raw = json.loads(message.payload.decode("utf-8"))
         msg = int(raw['cipher'])
         dec = cipher.decrypt(msg)
