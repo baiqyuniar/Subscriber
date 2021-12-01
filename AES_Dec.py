@@ -5,6 +5,7 @@ import binascii
 from time import sleep
 import paho.mqtt.client as mqtt
 import json
+from datetime import datetime
 
 # MQTT
 mqttBroker = "192.168.8.171"
@@ -95,13 +96,22 @@ def main2(msg, token):
 	text = Cipher_AES(key, iv).decrypt(msg, cipher_method, pad_method, code_method)
 	print('Decrypted\t:' + text)
 
-if __name__ == '__main__':
-    def on_message(client, userdata, message):
-        raw = json.loads(message.payload.decode('utf-8'))
-        main2(raw['cipher'], "CI6MTU3ODQ4ODYyM30.SAjMKd0chcAWoFwMkfxJ-Z1lWRM9-AeSXuHZiXBTYyo")
+def pencatatan(msg, dateSend):
+	now = str(datetime.now().microsecond)
+	f = open('subscribe_AES.csv', 'a')
+	f.write(msg + ";" + now + ";" + dateSend + "\n")
 
-    client.loop_start()
-    client.subscribe('AES')
-    client.on_message=on_message
-    sleep(300)
-    client.loop_stop
+if __name__ == '__main__':
+	def on_message(client, userdata, message):
+		raw = json.loads(message.payload.decode('utf-8'))
+		msg = raw['cipher']
+		dateSend = raw['datetime']
+		pencatatan(msg, dateSend)
+		main2(msg, "CI6MTU3ODQ4ODYyM30.SAjMKd0chcAWoFwMkfxJ-Z1lWRM9-AeSXuHZiXBTYyo")
+
+
+	client.loop_start()
+	client.subscribe('AES')
+	client.on_message=on_message
+	sleep(300)
+	client.loop_stop
