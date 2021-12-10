@@ -8,7 +8,7 @@ import json
 from datetime import datetime
 
 # MQTT
-mqttBroker = "192.168.8.171"
+mqttBroker = "192.168.1.152"
 client = mqtt.Client('AES Subscriber')
 client.connect(mqttBroker)
 
