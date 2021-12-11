@@ -219,7 +219,7 @@ class SimonCipher(object):
         return self.iv
 
 def pencatatan(msg, dateSend):
-	now = str(datetime.now().microsecond)
+	now = str(datetime.now())
 	f = open('subscribe_Simon.csv', 'a')
 	f.write(msg + ";" + now + ";" + dateSend + "\n")
 

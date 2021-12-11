@@ -97,7 +97,7 @@ def main2(msg, token):
 	print('Decrypted\t:' + text)
 
 def pencatatan(msg, dateSend):
-	now = str(datetime.now().microsecond)
+	now = str(datetime.now())
 	f = open('subscribe_AES.csv', 'a')
 	f.write(msg + ";" + now + ";" + dateSend + "\n")
 

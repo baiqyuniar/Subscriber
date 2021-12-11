@@ -188,7 +188,7 @@ class SpeckCipher(object):
         return self.iv
 
 def pencatatan(msg, dateSend):
-	now = str(datetime.now().microsecond)
+	now = str(datetime.now())
 	f = open('subscribe_Speck.csv', 'a')
 	f.write(msg + ";" + now + ";" + dateSend + "\n")
 
