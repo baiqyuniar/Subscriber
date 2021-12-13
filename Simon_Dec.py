@@ -6,9 +6,9 @@ import paho.mqtt.client as mqtt
 from datetime import datetime
 
 #MQTT
-mqttBroker = "192.168.1.152"
+mqttBroker = "192.168.43.57"
 client = mqtt.Client("Simon Subscriber")
-client.connect(mqttBroker)
+client.connect(mqttBroker, 1884)
 
 class SimonCipher(object):
     """Simon Block Cipher Object"""
@@ -219,7 +219,7 @@ class SimonCipher(object):
         return self.iv
 
 def pencatatan(msg, dateSend):
-	now = str(datetime.now())
+	now = str(datetime.now().timestamp())
 	f = open('subscribe_Simon.csv', 'a')
 	f.write(msg + ";" + now + ";" + dateSend + "\n")
 

@@ -5,9 +5,9 @@ import paho.mqtt.client as mqtt
 import json
 from datetime import datetime
 
-mqttBroker = "192.168.1.152"
+mqttBroker = "192.168.43.57"
 client = mqtt.Client("Speck Subscriber")
-client.connect(mqttBroker)
+client.connect(mqttBroker, 1884)
 
 class SpeckCipher(object):
     """Speck Block Cipher Object"""
@@ -188,7 +188,7 @@ class SpeckCipher(object):
         return self.iv
 
 def pencatatan(msg, dateSend):
-	now = str(datetime.now())
+	now = str(datetime.now().timestamp())
 	f = open('subscribe_Speck.csv', 'a')
 	f.write(msg + ";" + now + ";" + dateSend + "\n")
 

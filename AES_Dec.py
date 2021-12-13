@@ -8,9 +8,9 @@ import json
 from datetime import datetime
 
 # MQTT
-mqttBroker = "192.168.1.152"
+mqttBroker = "192.168.43.57"
 client = mqtt.Client('AES Subscriber')
-client.connect(mqttBroker)
+client.connect(mqttBroker, 1884)
 
 class Cipher_AES:
 	pad_default = lambda x, y: x + (y - len(x) % y) * " ".encode("utf-8")
@@ -97,7 +97,7 @@ def main2(msg, token):
 	print('Decrypted\t:' + text)
 
 def pencatatan(msg, dateSend):
-	now = str(datetime.now())
+	now = str(datetime.now().timestamp())
 	f = open('subscribe_AES.csv', 'a')
 	f.write(msg + ";" + now + ";" + dateSend + "\n")
 
