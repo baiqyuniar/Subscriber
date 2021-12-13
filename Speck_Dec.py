@@ -5,9 +5,9 @@ import paho.mqtt.client as mqtt
 import json
 from datetime import datetime
 
-mqttBroker = "192.168.43.57"
+mqttBroker = "192.168.1.152"
 client = mqtt.Client("Speck Subscriber")
-client.connect(mqttBroker, 1884)
+client.connect(mqttBroker)
 
 class SpeckCipher(object):
     """Speck Block Cipher Object"""

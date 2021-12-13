@@ -8,9 +8,9 @@ import json
 from datetime import datetime
 
 # MQTT
-mqttBroker = "192.168.43.57"
+mqttBroker = "192.168.1.152"
 client = mqtt.Client('AES Subscriber')
-client.connect(mqttBroker, 1884)
+client.connect(mqttBroker)
 
 class Cipher_AES:
 	pad_default = lambda x, y: x + (y - len(x) % y) * " ".encode("utf-8")
