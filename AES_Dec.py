@@ -74,7 +74,7 @@ class Cipher_AES:
 
 	
 def main2(msg):
-	key = 'Mu8weQyDvq1HlAzN'
+	key = 'Mu8weQyDvq1HlAzN7fjY026B'
 	iv = key 
 	cipher_method = "MODE_ECB"
 	pad_method = "PKCS5Padding"
