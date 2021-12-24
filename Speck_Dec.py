@@ -193,6 +193,8 @@ def pencatatan(msg, dateSend):
 	f.write(msg + ";" + now + ";" + dateSend + "\n")
 
 if __name__ == "__main__":
+   # key = 0x1f1e1d1c1b1a19181716151413121110 
+   # key = 0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a0908
     key = 0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100
     cipher = SpeckCipher(key, 256, 128, 'ECB')
     def on_message(client, userdata, message):
