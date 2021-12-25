@@ -72,10 +72,11 @@ class Cipher_AES:
 		else:
 			return Cipher_AES.unpad_user_defined(text, method)
 
-	
+
 def main2(msg):
-	key = 'Mu8weQyDvq1HlAzN7fjY026B'
-	iv = key 
+	#key = 'Mu8weQyDvq1HlAzN'
+	key = 'Mu8weQyDvq1HlAzN7fjY026Bjeu768db'
+	iv = 'HIwu5283JGHsi76H'
 	cipher_method = "MODE_ECB"
 	pad_method = "PKCS5Padding"
 	code_method = "base64"
