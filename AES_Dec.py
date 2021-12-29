@@ -8,7 +8,7 @@ import json
 from datetime import datetime
 
 # MQTT
-mqttBroker = "192.168.1.152"
+mqttBroker = "192.168.1.157"
 client = mqtt.Client('AES Subscriber')
 client.connect(mqttBroker)
 
@@ -75,9 +75,10 @@ class Cipher_AES:
 
 def main2(msg):
 	#key = 'Mu8weQyDvq1HlAzN'
-	key = 'Mu8weQyDvq1HlAzN7fjY026Bjeu768db'
+	key = 'Mu8weQyDvq1HlAzN7fjY026B'
+	#key = 'Mu8weQyDvq1HlAzN7fjY026Bjeu768db'
 	iv = 'HIwu5283JGHsi76H'
-	cipher_method = "MODE_CBC"
+	cipher_method = "MODE_ECB"
 	pad_method = "PKCS5Padding"
 	code_method = "base64"
 	text = Cipher_AES(key, iv).decrypt(msg, cipher_method, pad_method, code_method)
