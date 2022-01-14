@@ -5,6 +5,7 @@ import paho.mqtt.client as mqtt
 import json
 from datetime import datetime
 
+# MQTT Initialization
 mqttBroker = "192.168.1.157"
 client = mqtt.Client("Speck Subscriber")
 client.connect(mqttBroker)
@@ -116,20 +117,6 @@ class SpeckCipher(object):
 
         return new_x, new_y
 
-    def encrypt_round(self, x, y, k):
-        """Complete One Round of Feistel Operation"""
-        rs_x = ((x << (self.word_size - self.alpha_shift)) + (x >> self.alpha_shift)) & self.mod_mask
-
-        add_sxy = (rs_x + y) & self.mod_mask
-
-        new_x = k ^ add_sxy
-
-        ls_y = ((y >> (self.word_size - self.beta_shift)) + (y << self.beta_shift)) & self.mod_mask
-
-        new_y = new_x ^ ls_y
-
-        return new_x, new_y
-
     def decrypt(self, ciphertext):
         try:
             b = (ciphertext >> self.word_size) & self.mod_mask
@@ -175,6 +162,7 @@ class SpeckCipher(object):
 
         return x, y
 
+    # Method untuk melakukan update IV
     def update_iv(self, new_iv=None):
         if new_iv:
             try:
@@ -187,6 +175,7 @@ class SpeckCipher(object):
                 raise
         return self.iv
 
+# Melakukan pencatatan ke dalam file .csv
 def pencatatan(msg, dateSend):
 	now = str(datetime.now().timestamp())
 	f = open('subscribe_Speck.csv', 'a')
@@ -198,9 +187,9 @@ if __name__ == "__main__":
     key = 0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100
     cipher = SpeckCipher(key, 256, 128, 'CBC', 0x123456789ABCDEF0)
     def on_message(client, userdata, message):
-        raw = json.loads(message.payload.decode("utf-8"))
-        msg = int(raw['cipher'])
-        dateSend = raw['datetime']
+        raw = json.loads(message.payload.decode("utf-8"))       # Mengubah string menjadi JSON
+        msg = int(raw['cipher'])                                # Mengambil value dari cipher
+        dateSend = raw['datetime']                              # Mengambil value dari datetime
         pencatatan(str(msg), dateSend)
         dec = cipher.decrypt(msg)
         print("Decrypted\t: ", dec)

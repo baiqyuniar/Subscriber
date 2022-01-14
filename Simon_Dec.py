@@ -5,7 +5,7 @@ from collections import deque
 import paho.mqtt.client as mqtt
 from datetime import datetime
 
-#MQTT
+# MQTT Initialization
 mqttBroker = "192.168.1.157"
 client = mqtt.Client("Simon Subscriber")
 client.connect(mqttBroker)
@@ -203,9 +203,9 @@ class SimonCipher(object):
             xor_2 = xor_1 ^ ls_2_x
             y = x
             x = k ^ xor_2
-
         return x, y
 
+    # Method untuk melakukan update IV
     def update_iv(self, new_iv):
         if new_iv:
             try:
@@ -218,6 +218,7 @@ class SimonCipher(object):
                 raise
         return self.iv
 
+# Melakukan pencatatan ke dalam file .csv
 def pencatatan(msg, dateSend):
 	now = str(datetime.now().timestamp())
 	f = open('subscribe_Simon.csv', 'a')
@@ -229,9 +230,9 @@ if __name__ == "__main__":
     key = 0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100
     cipher = SimonCipher(key, 256, 128, 'CBC', 0x123456789ABCDEF0)
     def on_message(client, userdata, message):
-        raw = json.loads(message.payload.decode("utf-8"))
-        msg = int(raw['cipher'])
-        dateSend = raw['datetime']
+        raw = json.loads(message.payload.decode("utf-8"))       # Mengubah string menjadi JSON
+        msg = int(raw['cipher'])                                # Mengambil value dari cipher
+        dateSend = raw['datetime']                              # Mengambil value dari datetime
         pencatatan(str(msg), dateSend)
         dec = cipher.decrypt(msg)
         print("Decrypted\t: ", dec)
