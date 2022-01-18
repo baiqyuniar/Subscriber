@@ -228,8 +228,8 @@ if __name__ == "__main__":
    # key = 0x1f1e1d1c1b1a19181716151413121110
    # key = 0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a0908
     key = 0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100
-   # cipher = SimonCipher(key, 256, 128, 'CBC', 0x123456789ABCDEF0)
-    cipher = SimonCipher(key, 256, 128, 'ECB')
+    cipher = SimonCipher(key, 256, 128, 'CBC', 0x123456789ABCDEF0)
+   # cipher = SimonCipher(key, 256, 128, 'ECB')
     def on_message(client, userdata, message):
         raw = json.loads(message.payload.decode("utf-8"))
         msg = int(raw['cipher'])
