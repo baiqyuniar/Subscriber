@@ -8,7 +8,7 @@ import json
 from datetime import datetime
 
 # MQTT
-mqttBroker = "192.168.1.157"
+mqttBroker = "34.101.187.83"
 client = mqtt.Client('AES Subscriber')
 client.connect(mqttBroker)
 
@@ -74,15 +74,15 @@ class Cipher_AES:
 
 
 def main2(msg):
-	#key = 'Mu8weQyDvq1HlAzN'
-	key = 'Mu8weQyDvq1HlAzN7fjY026B'
+	key = 'Mu8weQyDvq1HlAzN'
+	#key = 'Mu8weQyDvq1HlAzN7fjY026B'
 	#key = 'Mu8weQyDvq1HlAzN7fjY026Bjeu768db'
 	iv = 'HIwu5283JGHsi76H'
-	cipher_method = "MODE_CBC"
+	cipher_method = "MODE_ECB"
 	pad_method = "PKCS5Padding"
 	code_method = "base64"
 	text = Cipher_AES(key, iv).decrypt(msg, cipher_method, pad_method, code_method)
-	print('Decrypted\t:' + text)
+	print('Decrypted\t:' +text)
 
 def pencatatan(msg, dateSend):
 	now = str(datetime.now().timestamp())
@@ -101,5 +101,5 @@ if __name__ == '__main__':
 	client.loop_start()
 	client.subscribe('AES')
 	client.on_message=on_message
-	sleep(700)
+	sleep(300)
 	client.loop_stop
