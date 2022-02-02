@@ -84,19 +84,19 @@ def main2(msg):
 	pad_method = "PKCS5Padding"
 	code_method = "base64"
 	text = Cipher_AES(key, iv).decrypt(msg, cipher_method, pad_method, code_method)
-	print('Decrypted\t:' +text)
+#	print('Decrypted\t:' +text)
 
-def pencatatan(msg, dateSend):
-	now = str(datetime.now().timestamp())
-	f = open('subscribe_AES.csv', 'a')
-	f.write(msg + ";" + now + ";" + dateSend + "\n")
+#def pencatatan(msg, dateSend):
+#	now = str(datetime.now().timestamp())
+#	f = open('subscribe_AES.csv', 'a')
+#	f.write(msg + ";" + now + ";" + dateSend + "\n")
 
 if __name__ == '__main__':
 	def on_message(client, userdata, message):
 		raw = json.loads(message.payload.decode('utf-8'))
 		msg = raw['cipher']
 		dateSend = raw['datetime']
-		pencatatan(msg, dateSend)
+#		pencatatan(msg, dateSend)
 		main2(msg)
 
 
