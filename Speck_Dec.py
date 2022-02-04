@@ -187,10 +187,10 @@ class SpeckCipher(object):
                 raise
         return self.iv
 
-#def pencatatan(msg, dateSend):
-#	now = str(datetime.now().timestamp())
-#	f = open('subscribe_Speck.csv', 'a')
-#	f.write(msg + ";" + now + ";" + dateSend + "\n")
+def pencatatan(msg, dateSend):
+	now = str(datetime.now().timestamp())
+	f = open('subscribe_Speck.csv', 'a')
+	f.write(msg + ";" + now + ";" + dateSend + "\n")
 
 if __name__ == "__main__":
     key = 0x1f1e1d1c1b1a19181716151413121110 
@@ -200,11 +200,12 @@ if __name__ == "__main__":
    # cipher = SpeckCipher(key, 256, 128, 'CBC', 0x123456789ABCDEF0)
     def on_message(client, userdata, message):
         raw = json.loads(message.payload.decode("utf-8"))
-        msg = int(raw['cipher'])
+        msg = raw['cipher']
         dateSend = raw['datetime']
- #       pencatatan(str(msg), dateSend)
-        dec = cipher.decrypt(msg)
- #       print("Decrypted\t: ", dec)
+        coba = int(msg, 16)
+        pencatatan(str(msg), dateSend)
+        dec = cipher.decrypt(coba)
+        print("Decrypted\t: ", dec)
 
     client.loop_start()
     client.subscribe("SPECK")
