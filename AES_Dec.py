@@ -82,7 +82,7 @@ def main2(msg):
 	iv = 'HIwu5283JGHsi76H'
 	cipher_method = "MODE_ECB"
 	pad_method = "PKCS5Padding"
-	code_method = "base64"
+	code_method = "hex"
 	text = Cipher_AES(key, iv).decrypt(msg, cipher_method, pad_method, code_method)
 #	print('Decrypted\t:' +text)
 
