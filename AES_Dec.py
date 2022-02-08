@@ -1,5 +1,6 @@
 
 
+
 import Cryptodome.Cipher.AES
 import Cryptodome.Random
 import base64
@@ -76,9 +77,9 @@ class Cipher_AES:
 
 
 def main2(msg):
-	#key = 'Mu8weQyDvq1HlAzN'
+	key = 'Mu8weQyDvq1HlAzN'
 	#key = 'Mu8weQyDvq1HlAzN7fjY026B'
-	key = 'Mu8weQyDvq1HlAzN7fjY026Bjeu768db'
+	#key = 'Mu8weQyDvq1HlAzN7fjY026Bjeu768db'
 	iv = 'HIwu5283JGHsi76H'
 	cipher_method = "MODE_ECB"
 	pad_method = "PKCS5Padding"
