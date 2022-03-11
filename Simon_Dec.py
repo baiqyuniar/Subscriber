@@ -239,7 +239,7 @@ if __name__ == "__main__":
         print("Decrypted\t: ", dec)
 
     client.loop_start()
-    client.subscribe("SIMON")
+    client.subscribe("SIM")
     client.on_message=on_message
     sleep(300)
     client.loop_stop
